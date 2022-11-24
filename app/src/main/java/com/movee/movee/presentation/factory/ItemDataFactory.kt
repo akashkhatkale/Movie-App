@@ -11,11 +11,11 @@ object ItemDataFactory {
     @Composable
     fun Create(feedItem: FeedItem) {
         when (feedItem.uiItemType) {
-            UiConstants.HORIZONTAL_MOVIE_ITEM -> {
+            UiConstants.HORIZONTAL_MOVIE_ITEM ->
                 HorizontalMovieItem(
                     feedItem = feedItem as HorizontalMoviesItem
                 )
-            }
+
         }
     }
 
