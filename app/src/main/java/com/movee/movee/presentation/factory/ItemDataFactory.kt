@@ -1,7 +1,6 @@
 package com.movee.movee.presentation.factory
 
 import androidx.compose.runtime.Composable
-import com.movee.movee.commons.constants.UiConstants
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_MOVIE_ITEM
 import com.movee.movee.domain.entities.FeedItem
@@ -15,17 +14,13 @@ object ItemDataFactory {
     @Composable
     fun Create(feedItem: FeedItem) {
         when (feedItem.uiItemType) {
-            HORIZONTAL_MOVIE_ITEM ->
-                HorizontalMovieItem(
-                    feedItem = feedItem as HorizontalMoviesItem
-                )
+            HORIZONTAL_MOVIE_ITEM -> HorizontalMovieItem(
+                feedItem = feedItem as HorizontalMoviesItem
+            )
 
-            HORIZONTAL_CAROUSEL_MOVIE_ITEM ->
-                HorizontalCarouselMovieItem(
-                    feedItem = feedItem as HorizontalCarouselMoviesItem
-                )
-
+            HORIZONTAL_CAROUSEL_MOVIE_ITEM -> HorizontalCarouselMovieItem(
+                feedItem = feedItem as HorizontalCarouselMoviesItem
+            )
         }
     }
-
 }
