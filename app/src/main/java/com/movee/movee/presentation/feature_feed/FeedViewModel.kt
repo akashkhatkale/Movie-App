@@ -3,11 +3,13 @@ package com.movee.movee.presentation.feature_feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movee.movee.commons.constants.ApiConstants.BASE_LANGUAGE
+import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_MOVIE_ITEM
 import com.movee.movee.commons.exceptions.NoInternetConnectionException
 import com.movee.movee.data.api.Resource
 import com.movee.movee.data.mapper.MoviesResponseMapper
 import com.movee.movee.domain.entities.FeedItem
+import com.movee.movee.domain.entities.HorizontalCarouselMoviesItem
 import com.movee.movee.domain.entities.HorizontalMoviesItem
 import com.movee.movee.domain.usecase.GetPopularMoviesUseCase
 import com.movee.movee.domain.usecase.GetTopRatedMoviesUseCase
@@ -50,8 +52,8 @@ class FeedViewModel @Inject constructor(
 
                 popularMovies.body()?.let {
                     feedList.add(
-                        HorizontalMoviesItem(
-                            HORIZONTAL_MOVIE_ITEM,
+                        HorizontalCarouselMoviesItem(
+                            HORIZONTAL_CAROUSEL_MOVIE_ITEM,
                             "Popular Movies",
                             "",
                             MoviesResponseMapper.map(it)

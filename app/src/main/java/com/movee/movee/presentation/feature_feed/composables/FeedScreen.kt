@@ -35,11 +35,11 @@ fun FeedScreen() {
                 )
             }
             is Resource.Success -> {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items((feedItems.value).data!!) { item ->
-                        ItemDataFactory.Create(feedItem = item)
+                LazyColumn() {
+                    feedItems.value.data?.let {
+                        items(it) { item ->
+                            ItemDataFactory.Create(feedItem = item)
+                        }
                     }
                 }
             }
