@@ -1,14 +1,17 @@
 package com.movee.movee.presentation.feature_feed
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movee.movee.commons.constants.ApiConstants.BASE_LANGUAGE
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_MOVIE_ITEM
 import com.movee.movee.commons.exceptions.NoInternetConnectionException
+import com.movee.movee.commons.exceptions.UnknownException
+import com.movee.movee.commons.extensions.empty
 import com.movee.movee.data.api.Resource
-import com.movee.movee.data.mapper.MoviesResponseMapper
 import com.movee.movee.domain.entities.FeedItem
 import com.movee.movee.domain.entities.HorizontalMoviesItem
+import com.movee.movee.domain.entities.MoviesResponse
 import com.movee.movee.domain.usecase.GetPopularMoviesUseCase
 import com.movee.movee.domain.usecase.GetTopRatedMoviesUseCase
 import com.movee.movee.domain.usecase.GetTrendingMoviesUseCase
@@ -31,121 +34,99 @@ class FeedViewModel @Inject constructor(
 
     private var _language = BASE_LANGUAGE
 
-    private var _feedItems = MutableStateFlow<Resource<ArrayList<FeedItem>>>(Resource.Idle())
+    private var _feedItems = MutableStateFlow<Resource<List<FeedItem>>>(Resource.Idle())
     val feedItems = _feedItems.asStateFlow()
 
     init {
-        loadFeed()
+        fetchFeed()
     }
 
-    fun loadFeed() {
+    private fun fetchFeed() {
         viewModelScope.launch {
             _feedItems.emit(Resource.Loading())
-            val feedList = arrayListOf<FeedItem>()
-            try {
-                val popularMovies = getPopularMoviesUseCase.execute(GetPopularMoviesUseCase.Input(_language))
-                val trendingMovies = getTrendingMoviesUseCase.execute(Unit)
-                val upcomingMovies = getUpcomingMoviesUseCase.execute(GetUpcomingMoviesUseCase.Input(_language))
-                val topRatedMovies = getTopRatedMoviesUseCase.execute(GetTopRatedMoviesUseCase.Input(_language))
+            val popularMovies = getPopularMoviesUseCase.execute(GetPopularMoviesUseCase.Input(_language))
+            val trendingMovies = getTrendingMoviesUseCase.execute(Unit)
+            val upcomingMovies = getUpcomingMoviesUseCase.execute(GetUpcomingMoviesUseCase.Input(_language))
+            val topRatedMovies = getTopRatedMoviesUseCase.execute(GetTopRatedMoviesUseCase.Input(_language))
 
-                popularMovies.body()?.let {
-                    feedList.add(
-                        HorizontalMoviesItem(
-                            HORIZONTAL_MOVIE_ITEM,
-                            "Popular Movies",
-                            "",
-                            MoviesResponseMapper.map(it)
-                        )
-                    )
-                }
-                trendingMovies.body()?.let {
-                    feedList.add(
-                        HorizontalMoviesItem(
-                            HORIZONTAL_MOVIE_ITEM,
-                            "Trending Movies",
-                            "#trending today",
-                            MoviesResponseMapper.map(it)
-                        )
-                    )
-                }
-                upcomingMovies.body()?.let {
-                    feedList.add(
-                        HorizontalMoviesItem(
-                            HORIZONTAL_MOVIE_ITEM,
-                            "Upcoming Movies",
-                            "",
-                            MoviesResponseMapper.map(it)
-                        )
-                    )
-                }
-                topRatedMovies.body()?.let {
-                    feedList.add(
-                        HorizontalMoviesItem(
-                            HORIZONTAL_MOVIE_ITEM,
-                            "Top Rated Movies",
-                            "",
-                            MoviesResponseMapper.map(it)
-                        )
-                    )
-                }
+            val (feedList, exception) = buildFeedList(
+                linkedMapOf(
+                    FeedItem(
+                        HORIZONTAL_MOVIE_ITEM,
+                        "Popular Movies",
+                        "",
+                    ) to popularMovies,
+
+                    FeedItem(
+                        HORIZONTAL_MOVIE_ITEM,
+                        "Trending Movies",
+                        "#trending today",
+                    ) to trendingMovies,
+
+                    FeedItem(
+                        HORIZONTAL_MOVIE_ITEM,
+                        "Upcoming Movies",
+                        "",
+                    ) to upcomingMovies,
+
+                    FeedItem(
+                        HORIZONTAL_MOVIE_ITEM,
+                        "Top Rated Movies",
+                        "",
+                    ) to topRatedMovies,
+                )
+            )
+            if (feedList.isNotEmpty()){
                 _feedItems.emit(Resource.Success(feedList))
-            } catch (e: IOException) {
-                _feedItems.emit(Resource.Error(NoInternetConnectionException()))
-            } catch (e: HttpException) {
-                _feedItems.emit(Resource.Error(com.movee.movee.commons.exceptions.HttpException(e.code())))
+            } else {
+                exception?.let {
+                    _feedItems.emit(Resource.Error(it))
+                } ?: run {
+                    _feedItems.emit(Resource.Error(UnknownException()))
+                }
             }
         }
     }
 
-    fun loadFeeed() {
-//        viewModelScope.launch {
-//            _feedItems.emit(Resource.Loading())
-//            val feedList = arrayListOf<FeedItem>()
-//            var failureMessage : Throwable? = null
-//            val popularMovies = async {
-//                getPopularMoviesUseCase.execute(GetPopularMoviesUseCase.Input(_language))
-//            }.await().onSuccess {
-//                feedList.add(PopularMoviesItem(POPULAR_MOVIE_ITEM, "Popular Movies", "", it))
-//            }.onFailure {
-//                failureMessage = it
-//            }
-//            val trendingMovies = async {
-//                getTrendingMoviesUseCase.execute(Unit)
-//            }.await().onSuccess {
-//                feedList.add(TrendingMoviesItem(TRENDING_MOVIE_ITEM, "Trending Movies", "", it))
-//            }.onFailure {
-//                failureMessage = it
-//            }
-//            val topRatedMovies = async {
-//                getTopRatedMoviesUseCase.execute(GetTopRatedMoviesUseCase.Input(_language))
-//            }.await().onSuccess {
-//                feedList.add(TopRatedMoviesItem(TOPRATED_MOVIE_ITEM, "Top Rated Movies", "", it))
-//            }.onFailure {
-//                failureMessage = it
-//            }
-//            val upcomingMovies = async {
-//                getUpcomingMoviesUseCase.execute(GetUpcomingMoviesUseCase.Input(_language))
-//            }.await().onSuccess {
-//                feedList.add(UpcomingMoviesItem(UPCOMING_MOVIE_ITEM, "Upcoming Movies", "", it))
-//            }.onFailure {
-//                failureMessage = it
-//            }
-//            if (popularMovies.isSuccess && trendingMovies.isSuccess && topRatedMovies.isSuccess && upcomingMovies.isSuccess) {
-//                _feedItems.emit(Resource.Success(feedList))
-//            } else if (failureMessage != null) {
-//                when (failureMessage) {
-//                    is HttpException -> {
-//                    }
-//                    is IOException -> {
-//                        _feedItems.emit(Resource.Error(com.movee.movee.commons.exceptions.NoInternetConnectionException()))
-//                    }
-//                    else -> {
-//                        _feedItems.emit(Resource.Error(com.movee.movee.commons.exceptions.UnknownException()))
-//                    }
-//                }
-//            }
-//        }
+    private fun <T> getResponseResult(response: Resource<T>) : Pair<T?, Exception?> {
+        return when (response) {
+            is Resource.Success -> {
+                Pair(response.data, null)
+            }
+            else -> Pair(null, response.message)
+        }
     }
 
-    fun done() {}
+    private fun buildFeedList(responseList: LinkedHashMap<FeedItem, Resource<MoviesResponse>>): Pair<List<FeedItem>, Exception?> {
+        var error: Exception? = null
+        val feedList = arrayListOf<FeedItem>()
+
+        responseList.forEach { mapEntry ->
+            val (response, exception) = getResponseResult(mapEntry.value)
+            response?.let {
+                feedList.add(
+                    getFeedItemType(mapEntry.key, it)
+                )
+            }
+            exception?.let {
+                error = it
+            }
+        }
+
+        return Pair(feedList, error)
+    }
+
+    private fun getFeedItemType(feedItem: FeedItem, response: MoviesResponse): FeedItem =
+        when (feedItem.uiItemType) {
+            HORIZONTAL_MOVIE_ITEM -> {
+                HorizontalMoviesItem(
+                    feedItem.uiItemType,
+                    feedItem.title,
+                    feedItem.subtitle,
+                    response
+                )
+            }
+            else -> FeedItem(String.empty, String.empty, String.empty)
+        }
+
 }
