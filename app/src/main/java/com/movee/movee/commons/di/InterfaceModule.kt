@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class InterfaceModule {
-    // interfaces
+
     @Binds
     abstract fun bindFeedRepository(
         repo : FeedRepositoryImpl

@@ -2,11 +2,11 @@ package com.movee.movee.data.api
 
 import com.movee.movee.commons.constants.ApiConstants.BASE_LANGUAGE
 import com.movee.movee.commons.constants.ApiConstants.BASE_VERSION
-import com.movee.movee.data.api.response.NetworkResponse
 import com.movee.movee.data.dto.MoviesResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.Response
+import retrofit2.http.Path
 
 
 interface MoviesApi {
@@ -39,6 +39,11 @@ interface MoviesApi {
     // get top tv shows
 
     // get movie details
+    @GET("$BASE_VERSION/{movieId}")
+    suspend fun getMovieDetail(
+        @Path("movieId") movieId: String,
+        @Query("language") language: String = BASE_LANGUAGE
+    )
 
     // get recommended movies/tv
 
