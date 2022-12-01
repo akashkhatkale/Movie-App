@@ -1,4 +1,4 @@
-package com.movee.movee.presentation
+package com.movee.movee.presentation.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

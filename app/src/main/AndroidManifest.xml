@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Movee"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.HomeActivity"
+            android:name=".presentation.home.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Movee">

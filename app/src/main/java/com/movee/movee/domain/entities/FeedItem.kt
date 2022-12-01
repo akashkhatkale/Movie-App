@@ -12,3 +12,10 @@ class HorizontalMoviesItem(
     subtitle : String,
     val response: MoviesResponse
 ) : FeedItem(uiItemType, title, subtitle)
+
+class HorizontalCarouselMoviesItem(
+    uiItemType : String,
+    title : String,
+    subtitle : String,
+    val response: MoviesResponse
+) : FeedItem(uiItemType, title, subtitle)

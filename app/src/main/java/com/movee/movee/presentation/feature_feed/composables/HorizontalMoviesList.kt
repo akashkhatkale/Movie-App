@@ -23,7 +23,7 @@ fun HorizontalMoviesList(
             Spacer(modifier = Modifier.width(marginTop))
             MovieCard(
                 movie.posterPath,
-                MovieCardSizeConstants.LARGE
+                MovieCardSizeConstants.MEDIUM
             )
         }
     }

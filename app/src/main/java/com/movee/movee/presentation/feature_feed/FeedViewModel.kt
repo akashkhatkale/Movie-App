@@ -1,15 +1,16 @@
 package com.movee.movee.presentation.feature_feed
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movee.movee.commons.constants.ApiConstants.BASE_LANGUAGE
+import com.movee.movee.commons.constants.UiConstants
+import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_MOVIE_ITEM
-import com.movee.movee.commons.exceptions.NoInternetConnectionException
 import com.movee.movee.commons.exceptions.UnknownException
 import com.movee.movee.commons.extensions.empty
 import com.movee.movee.data.api.Resource
 import com.movee.movee.domain.entities.FeedItem
+import com.movee.movee.domain.entities.HorizontalCarouselMoviesItem
 import com.movee.movee.domain.entities.HorizontalMoviesItem
 import com.movee.movee.domain.entities.MoviesResponse
 import com.movee.movee.domain.usecase.GetPopularMoviesUseCase
@@ -20,8 +21,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,7 +51,7 @@ class FeedViewModel @Inject constructor(
             val (feedList, exception) = buildFeedList(
                 linkedMapOf(
                     FeedItem(
-                        HORIZONTAL_MOVIE_ITEM,
+                        UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM,
                         "Popular Movies",
                         "",
                     ) to popularMovies,
@@ -120,6 +119,14 @@ class FeedViewModel @Inject constructor(
         when (feedItem.uiItemType) {
             HORIZONTAL_MOVIE_ITEM -> {
                 HorizontalMoviesItem(
+                    feedItem.uiItemType,
+                    feedItem.title,
+                    feedItem.subtitle,
+                    response
+                )
+            }
+            HORIZONTAL_CAROUSEL_MOVIE_ITEM -> {
+                HorizontalCarouselMoviesItem(
                     feedItem.uiItemType,
                     feedItem.title,
                     feedItem.subtitle,
