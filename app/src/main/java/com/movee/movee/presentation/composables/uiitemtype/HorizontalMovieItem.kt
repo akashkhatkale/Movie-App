@@ -11,13 +11,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.movee.movee.commons.composables.HorizontalMoviesList
-import com.movee.movee.domain.entities.HorizontalMoviesItem
+import com.movee.movee.domain.entities.HorizontalMoviesFeedItem
 import com.movee.movee.presentation.theme.SubtitleColor
 import com.movee.movee.presentation.theme.TextColor
 
 @Composable
 fun HorizontalMovieItem(
-    feedItem: HorizontalMoviesItem
+    feedItem: HorizontalMoviesFeedItem
 ) {
     Column {
         Text(

@@ -6,13 +6,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.movee.movee.domain.entities.HorizontalCarouselMoviesItem
+import com.movee.movee.domain.entities.HorizontalCarouselMoviesFeedItem
 import com.movee.movee.presentation.feature_feed.composables.HorizontalCarouselMoviesList
-import com.movee.movee.domain.entities.HorizontalMoviesItem
 
 @Composable
 fun HorizontalCarouselMovieItem(
-    feedItem: HorizontalCarouselMoviesItem
+    feedItem: HorizontalCarouselMoviesFeedItem
 ) {
     Column {
         Spacer(modifier = Modifier.height(10.dp))

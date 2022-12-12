@@ -13,9 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.movee.movee.commons.constants.ApiConstants
-import com.movee.movee.commons.constants.ApiConstants.IMAGE_URL
 import com.movee.movee.commons.constants.MovieCardSizeConstants
+import com.movee.movee.commons.extensions.getImageUrl
 
 @Preview
 @Composable
@@ -29,7 +28,7 @@ fun MovieCard(
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(IMAGE_URL + ApiConstants.ImageWidth.WIDTH_500.width + url)
+                .data(getImageUrl(url))
                 .crossfade(true)
                 .build(),
             contentDescription = null,

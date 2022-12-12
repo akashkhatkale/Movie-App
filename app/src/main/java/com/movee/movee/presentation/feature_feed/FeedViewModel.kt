@@ -3,16 +3,13 @@ package com.movee.movee.presentation.feature_feed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movee.movee.commons.constants.ApiConstants.BASE_LANGUAGE
-import com.movee.movee.commons.constants.UiConstants
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM
+import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_FULL_WIDTH_CAROUSEL_ITEM
 import com.movee.movee.commons.constants.UiConstants.HORIZONTAL_MOVIE_ITEM
 import com.movee.movee.commons.exceptions.UnknownException
 import com.movee.movee.commons.extensions.empty
 import com.movee.movee.data.api.Resource
-import com.movee.movee.domain.entities.FeedItem
-import com.movee.movee.domain.entities.HorizontalCarouselMoviesItem
-import com.movee.movee.domain.entities.HorizontalMoviesItem
-import com.movee.movee.domain.entities.MoviesResponse
+import com.movee.movee.domain.entities.*
 import com.movee.movee.domain.usecase.GetPopularMoviesUseCase
 import com.movee.movee.domain.usecase.GetTopRatedMoviesUseCase
 import com.movee.movee.domain.usecase.GetTrendingMoviesUseCase
@@ -51,7 +48,7 @@ class FeedViewModel @Inject constructor(
             val (feedList, exception) = buildFeedList(
                 linkedMapOf(
                     FeedItem(
-                        UiConstants.HORIZONTAL_CAROUSEL_MOVIE_ITEM,
+                        HORIZONTAL_FULL_WIDTH_CAROUSEL_ITEM,
                         "Popular Movies",
                         "",
                     ) to popularMovies,
@@ -118,7 +115,7 @@ class FeedViewModel @Inject constructor(
     private fun getFeedItemType(feedItem: FeedItem, response: MoviesResponse): FeedItem =
         when (feedItem.uiItemType) {
             HORIZONTAL_MOVIE_ITEM -> {
-                HorizontalMoviesItem(
+                HorizontalMoviesFeedItem(
                     feedItem.uiItemType,
                     feedItem.title,
                     feedItem.subtitle,
@@ -126,7 +123,15 @@ class FeedViewModel @Inject constructor(
                 )
             }
             HORIZONTAL_CAROUSEL_MOVIE_ITEM -> {
-                HorizontalCarouselMoviesItem(
+                HorizontalCarouselMoviesFeedItem(
+                    feedItem.uiItemType,
+                    feedItem.title,
+                    feedItem.subtitle,
+                    response
+                )
+            }
+            HORIZONTAL_FULL_WIDTH_CAROUSEL_ITEM -> {
+                HorizontalFullWidthCarouselMoviesFeedItem(
                     feedItem.uiItemType,
                     feedItem.title,
                     feedItem.subtitle,

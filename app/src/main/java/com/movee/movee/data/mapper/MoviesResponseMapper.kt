@@ -22,6 +22,8 @@ object MoviesResponseMapper : Mapper<MoviesResponseDto, MoviesResponse> {
                     it.popularity.orZero(),
                     it.posterPath.orEmpty(),
                     it.releaseDate.orEmpty(),
+                    it.title.orEmpty(),
+                    it.voteAverage.orZero()
                 )
             } ?: emptyList(),
             input.totalPages.orZero(),

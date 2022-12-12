@@ -1,5 +1,7 @@
 package com.movee.movee.domain.entities
 
+import com.movee.movee.commons.extensions.empty
+
 
 data class MoviesResponse(
     val page: Int = 0,
@@ -15,15 +17,16 @@ data class MoviesResponse(
 
     data class Result(
         val adult: Boolean = false,
-        val backdropPath: String = "",
+        val backdropPath: String = String.empty,
         val genreIds: List<Int> = emptyList(),
         val id: Int = 0,
-        val originalLanguage: String = "",
-        val originalTitle: String = "",
-        val overview: String = "",
+        val originalLanguage: String = String.empty,
+        val originalTitle: String = String.empty,
+        val overview: String = String.empty,
         val popularity: Double = 0.0,
-        val posterPath: String = "",
-        val releaseDate: String = "",
-        val title: String = "",
+        val posterPath: String = String.empty,
+        val releaseDate: String = String.empty,
+        val title: String = String.empty,
+        val vote: Double = 0.0
     )
 }

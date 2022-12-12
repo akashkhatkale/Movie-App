@@ -124,7 +124,8 @@ dependencies {
     // shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-
+    // viewpager
+    implementation "com.google.accompanist:accompanist-pager:0.28.0"
 
 
 }
