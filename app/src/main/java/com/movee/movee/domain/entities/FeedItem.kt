@@ -6,14 +6,21 @@ open class FeedItem(
     val subtitle : String
 )
 
-class HorizontalMoviesItem(
+class HorizontalMoviesFeedItem(
     uiItemType : String,
     title : String,
     subtitle : String,
     val response: MoviesResponse
 ) : FeedItem(uiItemType, title, subtitle)
 
-class HorizontalCarouselMoviesItem(
+class HorizontalCarouselMoviesFeedItem(
+    uiItemType : String,
+    title : String,
+    subtitle : String,
+    val response: MoviesResponse
+) : FeedItem(uiItemType, title, subtitle)
+
+class HorizontalFullWidthCarouselMoviesFeedItem(
     uiItemType : String,
     title : String,
     subtitle : String,
