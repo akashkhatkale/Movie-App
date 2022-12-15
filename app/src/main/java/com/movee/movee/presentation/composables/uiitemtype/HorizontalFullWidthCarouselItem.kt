@@ -51,7 +51,7 @@ fun HorizontalFullWidthCarouselItem(
             trimmedFeedItem,
             pagerState,
         )
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         DotsIndicator(current = pagerState.currentPage, total = pagerState.pageCount)
     }
 }

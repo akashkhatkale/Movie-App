@@ -20,9 +20,6 @@ import com.movee.movee.presentation.theme.SubtitleColor
 fun HomeScreen() {
     val navController = rememberNavController()
     Scaffold(
-        topBar = {
-            CustomTopAppBar(title = "Movee")
-        },
         bottomBar = {
             MainBottomNavigationView(navController)
         },
