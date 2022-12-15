@@ -1,10 +1,14 @@
 package com.movee.movee.presentation.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -30,7 +34,9 @@ fun HomeScreen() {
     ) {
         NavHost(
             navController = navController,
-            startDestination = BottomNavigationInfo.HomeBottomItem.route
+            startDestination = BottomNavigationInfo.HomeBottomItem.route,
+            modifier = Modifier.padding(
+                PaddingValues(0.dp, 0.dp, 0.dp, it.calculateBottomPadding()))
         ) {
             composable(route = BottomNavigationInfo.HomeBottomItem.route) {
                 FeedScreen()
